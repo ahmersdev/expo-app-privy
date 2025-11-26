@@ -1,7 +1,7 @@
-import Home from "@/features/home";
+import Login from "@/features/login";
 
-const HomeScreen = () => {
-  return <Home />;
+const LoginScreen = () => {
+  return <Login />;
 };
 
-export default HomeScreen;
+export default LoginScreen;

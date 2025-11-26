@@ -1,10 +1,18 @@
 import BackpackWallet from "@/components/backpack";
 import OthersWallet from "@/components/others";
 import PhantomWallet from "@/components/phantom";
+import { usePrivy } from "@privy-io/expo";
+import { Redirect } from "expo-router";
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Login = () => {
+  const { user }: any = usePrivy();
+
+  if (user) {
+    return <Redirect href="/home" />;
+  }
+
   return (
     <SafeAreaView style={{ padding: 16 }}>
       <Text

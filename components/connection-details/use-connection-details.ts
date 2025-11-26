@@ -10,7 +10,7 @@ const useConnectionDetails = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/login");
+      router.push("/");
       Toast.show({
         type: "success",
         text1: "Logged out successfully",
