@@ -1,5 +1,8 @@
-import { BackpackWallet, PhantomWallet } from "@/components/login-wallets";
-import OthersWallet from "@/components/others";
+import {
+  BackpackWallet,
+  PhantomWallet,
+  SolflareWallet,
+} from "@/components/login-wallets";
 import { usePrivy } from "@privy-io/expo";
 import { Redirect } from "expo-router";
 import { Text } from "react-native";
@@ -27,7 +30,7 @@ const Login = () => {
 
       <PhantomWallet />
       <BackpackWallet />
-      <OthersWallet />
+      <SolflareWallet />
     </SafeAreaView>
   );
 };
