@@ -4,9 +4,8 @@ import {
   useDeeplinkWalletConnector,
   usePhantomDeeplinkWalletConnector,
 } from "@privy-io/expo/connectors";
-import { Button } from "@react-navigation/elements";
 import { Redirect } from "expo-router";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
@@ -54,7 +53,7 @@ const Home = () => {
         <View>
           <Text>Phantom connected</Text>
           <Text>Address: {phantomAddress}</Text>
-          <Button onPress={() => phantomDisconnect()}>Disconnect</Button>
+          <Button title="Disconnect" onPress={() => phantomDisconnect()} />
         </View>
       )}
 
@@ -62,7 +61,7 @@ const Home = () => {
         <View>
           <Text>Backpack connected</Text>
           <Text>Address: {backpackAddress}</Text>
-          <Button onPress={() => backpackDisconnect()}>Disconnect</Button>
+          <Button title="Disconnect" onPress={() => backpackDisconnect()} />
         </View>
       )}
 
@@ -70,7 +69,7 @@ const Home = () => {
         <View>
           <Text>Others connected</Text>
           <Text>Address: {othersAddress}</Text>
-          <Button onPress={() => othersDisconnect()}>Disconnect</Button>
+          <Button title="Disconnect" onPress={() => othersDisconnect()} />
         </View>
       )}
     </SafeAreaView>

@@ -1,123 +1,63 @@
+import { useLoginWithSiws } from "@privy-io/expo";
 import { usePhantomDeeplinkWalletConnector } from "@privy-io/expo/connectors";
-import { Button } from "@react-navigation/elements";
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
-import { Text } from "react-native";
+import { Button, Text } from "react-native";
 
 const PhantomWallet = () => {
-  const {
-    address,
-    connect,
-    disconnect,
-    isConnected,
-    signMessage,
-    signTransaction,
-    signAllTransactions,
-    signAndSendTransaction,
-  } = usePhantomDeeplinkWalletConnector({
-    appUrl: process.env.EXPO_PUBLIC_APP_URL || "privytest://",
-    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI || "/",
-  });
+  const { generateMessage, login } = useLoginWithSiws();
 
-  // Function to handle message signing
-  const handleSignMsg = async () => {
+  const { address, connect, isConnected, signMessage } =
+    usePhantomDeeplinkWalletConnector({
+      appUrl: process.env.EXPO_PUBLIC_APP_URL || "privytest://",
+      redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI || "/",
+    });
+
+  const handleConnect = async () => {
     try {
-      const message = "Hello, Privy Expo!";
-      const signature = await signMessage(message);
-      console.log("Message signed:", signature);
+      await connect();
     } catch (error) {
-      console.error("Error signing message:", error);
+      console.error("Error connecting Phantom wallet:", error);
     }
   };
 
-  // Function to handle transaction signing
-  const handleSignTx = async () => {
-    try {
-      // Create a transaction
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: new PublicKey(address || ""),
-          toPubkey: new PublicKey("DESTINATION_ADDRESS"),
-          lamports: LAMPORTS_PER_SOL * 0.01,
-        })
-      );
-
-      const signedTx = await signTransaction(transaction);
-      console.log("Transaction signed:", signedTx);
-    } catch (error) {
-      console.error("Error signing transaction:", error);
+  const handleLogin = async () => {
+    // Connect to the wallet if not already connected
+    if (!address) {
+      return;
     }
-  };
 
-  // Function to handle signing and sending a transaction
-  const handleSignAndSendTx = async () => {
-    try {
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: new PublicKey(address || ""),
-          toPubkey: new PublicKey("DESTINATION_ADDRESS"),
-          lamports: LAMPORTS_PER_SOL * 0.01,
-        })
-      );
+    // Generate the SIWS message
+    const { message } = await generateMessage({
+      from: {
+        domain: "privy.io",
+        uri: "https://privy.io",
+      },
+      wallet: {
+        address,
+      },
+    });
 
-      const signature = await signAndSendTransaction(transaction);
-      console.log("Transaction sent:", signature);
-    } catch (error) {
-      console.error("Error sending transaction:", error);
-    }
-  };
+    // Sign the message
+    const signature = await signMessage(message);
 
-  // Function to handle signing multiple transactions
-  const handleSignAllTxs = async () => {
-    try {
-      const transactions = [
-        new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: new PublicKey(address || ""),
-            toPubkey: new PublicKey("DESTINATION_ADDRESS_1"),
-            lamports: LAMPORTS_PER_SOL * 0.01,
-          })
-        ),
-        new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: new PublicKey(address || ""),
-            toPubkey: new PublicKey("DESTINATION_ADDRESS_2"),
-            lamports: LAMPORTS_PER_SOL * 0.01,
-          })
-        ),
-      ];
-
-      const signedTxs = await signAllTransactions(transactions);
-      console.log("Transactions signed:", signedTxs);
-    } catch (error) {
-      console.error("Error signing transactions:", error);
-    }
+    // Login with the signature
+    await login({
+      message,
+      signature: signature.signature,
+      wallet: {
+        walletClientType: "phantom",
+        connectorType: "mobile_wallet_protocol",
+      },
+    });
   };
 
   return (
     <>
       <Text>Phantom Wallet</Text>
-      <Text>Connected Phantom: {isConnected ? "true" : "false"}</Text>
 
-      {!isConnected && (
-        <Button onPress={() => connect()}>Connect Phantom Wallet</Button>
-      )}
-
-      {isConnected && (
-        <>
-          <Text>Address: {address}</Text>
-          <Button onPress={() => disconnect()}>Disconnect</Button>
-          <Button onPress={handleSignMsg}>Sign message</Button>
-          <Button onPress={handleSignTx}>Sign transaction</Button>
-          <Button onPress={handleSignAndSendTx}>
-            Sign and send transaction
-          </Button>
-          <Button onPress={handleSignAllTxs}>Sign all transactions</Button>
-        </>
+      {isConnected ? (
+        <Button title={"Login with Phantom"} onPress={handleLogin} />
+      ) : (
+        <Button title={"Connect Phantom Wallet"} onPress={handleConnect} />
       )}
     </>
   );
