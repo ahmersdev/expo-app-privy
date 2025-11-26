@@ -1,6 +1,5 @@
-import BackpackWallet from "@/components/backpack";
+import { BackpackWallet, PhantomWallet } from "@/components/login-wallets";
 import OthersWallet from "@/components/others";
-import PhantomWallet from "@/components/phantom";
 import { usePrivy } from "@privy-io/expo";
 import { Redirect } from "expo-router";
 import { Text } from "react-native";

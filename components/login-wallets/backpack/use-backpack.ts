@@ -1,7 +1,5 @@
 import { useLoginWithSiws } from "@privy-io/expo";
-import { usePhantomDeeplinkWalletConnector } from "@privy-io/expo/connectors";
-import { Text } from "react-native";
-import Button from "../button";
+import { useBackpackDeeplinkWalletConnector } from "@privy-io/expo/connectors";
 import Toast from "react-native-toast-message";
 import { walletBaseConfig } from "@/config";
 import useWalletConnector from "@/hooks/use-wallet-connector";
@@ -9,12 +7,12 @@ import { base58ToBase64 } from "@/utils/base58-to-base64";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 
-const usePhantom = () => {
+const useBackpack = () => {
   const router = useRouter();
   const { generateMessage, login } = useLoginWithSiws();
 
   const { address, connect, isConnected, signMessage } = useWalletConnector(
-    usePhantomDeeplinkWalletConnector,
+    useBackpackDeeplinkWalletConnector,
     walletBaseConfig
   );
 
@@ -23,12 +21,12 @@ const usePhantom = () => {
       await connect();
       Toast.show({
         type: "success",
-        text1: "Connected to Phantom wallet",
+        text1: "Connected to Backpack wallet",
       });
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: `Error connecting Phantom wallet: ${error}`,
+        text1: `Error connecting Backpack wallet: ${error}`,
       });
     }
   };
@@ -74,7 +72,7 @@ const usePhantom = () => {
           message,
           signature: base58ToBase64(signature.signature),
           wallet: {
-            walletClientType: "phantom",
+            walletClientType: "backpack",
             connectorType: "mobile_wallet_protocol",
           },
         });
@@ -97,7 +95,7 @@ const usePhantom = () => {
     }
   };
 
-  return { router, handleConnect };
+  return { handleConnect };
 };
 
-export default usePhantom;
+export default useBackpack;
