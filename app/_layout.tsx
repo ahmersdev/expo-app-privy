@@ -1,5 +1,6 @@
 import { PrivyProvider } from "@privy-io/expo";
 import { Stack } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const RootLayout = () => {
   return (
@@ -11,6 +12,7 @@ const RootLayout = () => {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
       </Stack>
+      <Toast />
     </PrivyProvider>
   );
 };

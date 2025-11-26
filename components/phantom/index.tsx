@@ -1,21 +1,34 @@
-import { useLoginWithSiws } from "@privy-io/expo";
+import { useLoginWithSiws, usePrivy } from "@privy-io/expo";
 import { usePhantomDeeplinkWalletConnector } from "@privy-io/expo/connectors";
-import { Button, Text } from "react-native";
+import { Text } from "react-native";
+import Button from "../button";
+import Toast from "react-native-toast-message";
+import { walletBaseConfig } from "@/config";
+import useWalletConnector from "@/hooks/use-wallet-connector";
+import { base58ToBase64 } from "@/utils/base58-to-base64";
+import { useRouter } from "expo-router";
 
 const PhantomWallet = () => {
+  const router = useRouter();
   const { generateMessage, login } = useLoginWithSiws();
 
-  const { address, connect, isConnected, signMessage } =
-    usePhantomDeeplinkWalletConnector({
-      appUrl: process.env.EXPO_PUBLIC_APP_URL || "privytest://",
-      redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI || "/",
-    });
+  const { address, connect, isConnected, signMessage } = useWalletConnector(
+    usePhantomDeeplinkWalletConnector,
+    walletBaseConfig
+  );
 
   const handleConnect = async () => {
     try {
       await connect();
+      Toast.show({
+        type: "success",
+        text1: "Connected to Phantom wallet",
+      });
     } catch (error) {
-      console.error("Error connecting Phantom wallet:", error);
+      Toast.show({
+        type: "error",
+        text1: `Error connecting Phantom wallet: ${error}`,
+      });
     }
   };
 
@@ -25,34 +38,57 @@ const PhantomWallet = () => {
       return;
     }
 
-    // Generate the SIWS message
-    const { message } = await generateMessage({
-      from: {
-        domain: "privy.io",
-        uri: "https://privy.io",
-      },
-      wallet: {
-        address,
-      },
-    });
+    try {
+      // Generate the SIWS message
+      const { message } = await generateMessage({
+        from: {
+          domain: "privy.io",
+          uri: "https://privy.io",
+        },
+        wallet: {
+          address,
+        },
+      });
 
-    // Sign the message
-    const signature = await signMessage(message);
+      // Sign the message
+      let signature;
+      try {
+        signature = await signMessage(message);
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: `Error signing message: ${error}`,
+        });
+      }
 
-    // Login with the signature
-    await login({
-      message,
-      signature: signature.signature,
-      wallet: {
-        walletClientType: "phantom",
-        connectorType: "mobile_wallet_protocol",
-      },
-    });
+      // Login with the signature
+      try {
+        await login({
+          message,
+          signature: base58ToBase64(signature.signature),
+          wallet: {
+            walletClientType: "phantom",
+            connectorType: "mobile_wallet_protocol",
+          },
+        });
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: `Error logging in: ${error}`,
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: `Error generating SIWS message: ${error}`,
+      });
+    }
   };
 
   return (
     <>
       <Text>Phantom Wallet</Text>
+      <Button title={"Home Page"} onPress={() => router.push("/")} />
 
       {isConnected ? (
         <Button title={"Login with Phantom"} onPress={handleLogin} />

@@ -25,6 +25,13 @@ const Home = () => {
       >
         Home Page
       </Text>
+      <ConnectionDetails
+        key={"Phantom"}
+        label={"Phantom"}
+        address={user.linked_accounts[0]?.address}
+        disconnect={() => {}}
+      />
+
       {connectorsDataArray.map(({ label, hook, config }: any) => {
         const wallet = useWalletConnector(hook, config);
         if (!wallet.isConnected) return null;

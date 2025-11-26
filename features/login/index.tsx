@@ -1,12 +1,28 @@
-import { View, Text } from "react-native";
-import React from "react";
+import BackpackWallet from "@/components/backpack";
+import OthersWallet from "@/components/others";
+import PhantomWallet from "@/components/phantom";
+import { Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const index = () => {
+const Login = () => {
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <SafeAreaView style={{ padding: 16 }}>
+      <Text
+        style={{
+          fontSize: 24,
+          fontWeight: "bold",
+          marginBottom: 16,
+          textAlign: "center",
+        }}
+      >
+        Login Page
+      </Text>
+
+      <PhantomWallet />
+      <BackpackWallet />
+      <OthersWallet />
+    </SafeAreaView>
   );
 };
 
-export default index;
+export default Login;
