@@ -1,14 +1,17 @@
 import { useLoginWithSiws, usePrivy } from "@privy-io/expo";
 import { usePhantomDeeplinkWalletConnector } from "@privy-io/expo/connectors";
-import { Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 import Button from "../button";
 import Toast from "react-native-toast-message";
 import { walletBaseConfig } from "@/config";
 import useWalletConnector from "@/hooks/use-wallet-connector";
 import { base58ToBase64 } from "@/utils/base58-to-base64";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 
 const PhantomWallet = () => {
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
   const { generateMessage, login } = useLoginWithSiws();
 
@@ -31,6 +34,14 @@ const PhantomWallet = () => {
       });
     }
   };
+
+  useEffect(() => {
+    setLoading(true);
+    if (isConnected) {
+      handleLogin();
+    }
+    setLoading(false);
+  }, [isConnected]);
 
   const handleLogin = async () => {
     // Connect to the wallet if not already connected
@@ -90,10 +101,10 @@ const PhantomWallet = () => {
       <Text>Phantom Wallet</Text>
       <Button title={"Home Page"} onPress={() => router.push("/")} />
 
-      {isConnected ? (
-        <Button title={"Login with Phantom"} onPress={handleLogin} />
+      {loading ? (
+        <ActivityIndicator />
       ) : (
-        <Button title={"Connect Phantom Wallet"} onPress={handleConnect} />
+        <Button title={"Login with Phantom"} onPress={handleConnect} />
       )}
     </>
   );

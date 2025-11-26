@@ -9,6 +9,12 @@ import { Text } from "react-native";
 const Home = () => {
   const { user } = usePrivy();
 
+  // Call all hooks unconditionally at the top level.
+  const wallets = connectorsDataArray.map(({ label, hook, config }: any) => ({
+    label,
+    wallet: useWalletConnector(hook, config),
+  }));
+
   if (!user) {
     return <Redirect href="/login" />;
   }
@@ -32,19 +38,16 @@ const Home = () => {
         disconnect={() => {}}
       />
 
-      {connectorsDataArray.map(({ label, hook, config }: any) => {
-        const wallet = useWalletConnector(hook, config);
-        if (!wallet.isConnected) return null;
-
-        return (
+      {wallets
+        .filter(({ wallet }) => wallet.isConnected)
+        .map(({ label, wallet }) => (
           <ConnectionDetails
             key={label}
             label={label}
             address={wallet.address}
             disconnect={wallet.disconnect}
           />
-        );
-      })}
+        ))}
     </SafeAreaView>
   );
 };
