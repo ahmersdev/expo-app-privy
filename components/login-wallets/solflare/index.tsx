@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import Button from "@/components/button";
 import useSolflare from "./use-solflare";
 
@@ -6,11 +6,13 @@ const SolflareWallet = () => {
   const { handleConnect } = useSolflare();
 
   return (
-    <>
-      <Text>Solflare Wallet</Text>
+    <View>
+      <Text style={{ color: "#ffffff", fontWeight: "bold", fontSize: 16 }}>
+        Solflare Wallet
+      </Text>
 
       <Button title={"Login with Solflare"} onPress={handleConnect} />
-    </>
+    </View>
   );
 };
 

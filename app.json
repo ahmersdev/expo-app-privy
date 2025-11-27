@@ -21,6 +21,10 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
+    "extra": {
+      "privyAppId": "cmieguf95016ljr0cs6ykf7es",
+      "privyClientId": "client-WY6TLx7rnwxZtVoT6ZW5NseNSg6ELxSgCV9tVjko5U3YU"
+    },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"

@@ -16,13 +16,16 @@ const Login = () => {
   }
 
   return (
-    <SafeAreaView style={{ padding: 16 }}>
+    <SafeAreaView
+      style={{ padding: 16, display: "flex", flexDirection: "column", gap: 16 }}
+    >
       <Text
         style={{
           fontSize: 24,
           fontWeight: "bold",
           marginBottom: 16,
           textAlign: "center",
+          color: "#ffffff",
         }}
       >
         Login Page

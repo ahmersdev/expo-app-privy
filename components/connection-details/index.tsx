@@ -10,8 +10,20 @@ const ConnectionDetails = (props: IConnectionDetailsProps) => {
 
   return (
     <View>
-      <Text style={{ textTransform: "capitalize" }}>{label} connected</Text>
-      <Text>Address: {address}</Text>
+      <Text
+        style={{
+          textTransform: "capitalize",
+          color: "#ffffff",
+          fontSize: 16,
+        }}
+      >
+        <Text style={{ color: "#8b86ff", fontWeight: "bold" }}>{label}</Text>{" "}
+        connected
+      </Text>
+      <Text style={{ color: "#ffffff", fontSize: 16 }}>
+        Address:{" "}
+        <Text style={{ color: "#8b86ff", fontWeight: "bold" }}>{address}</Text>
+      </Text>
 
       <Button title={"Logout"} onPress={handleLogout} />
     </View>
