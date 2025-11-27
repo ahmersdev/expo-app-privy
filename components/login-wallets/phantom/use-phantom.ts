@@ -26,7 +26,8 @@ const usePhantom = () => {
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: `Error connecting Phantom wallet: ${error}`,
+        text1: "Error connecting Phantom wallet",
+        text2: error instanceof Error ? error.message : String(error),
       });
     }
   };
@@ -62,7 +63,8 @@ const usePhantom = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: `Error signing message: ${error}`,
+          text1: "Error signing message",
+          text2: error instanceof Error ? error.message : String(error),
         });
       }
 
@@ -84,13 +86,15 @@ const usePhantom = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: `Error logging in: ${error}`,
+          text1: "Error logging in",
+          text2: error instanceof Error ? error.message : String(error),
         });
       }
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: `Error generating SIWS message: ${error}`,
+        text1: "Error generating SIWS message",
+        text2: error instanceof Error ? error.message : String(error),
       });
     }
   };
