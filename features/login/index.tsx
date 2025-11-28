@@ -1,5 +1,8 @@
 import {
   BackpackWallet,
+  BitgetWallet,
+  MetaMaskWallet,
+  OkxWallet,
   PhantomWallet,
   SolflareWallet,
 } from "@/components/login-wallets";
@@ -34,6 +37,9 @@ const Login = () => {
       <PhantomWallet />
       <BackpackWallet />
       <SolflareWallet />
+      <MetaMaskWallet />
+      <BitgetWallet />
+      <OkxWallet />
     </SafeAreaView>
   );
 };
