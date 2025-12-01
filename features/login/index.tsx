@@ -1,7 +1,6 @@
 import {
   BackpackWallet,
   BitgetWallet,
-  MetaMaskWallet,
   OkxWallet,
   PhantomWallet,
   SolflareWallet,
@@ -37,7 +36,6 @@ const Login = () => {
       <PhantomWallet />
       <BackpackWallet />
       <SolflareWallet />
-      <MetaMaskWallet />
       <BitgetWallet />
       <OkxWallet />
     </SafeAreaView>
