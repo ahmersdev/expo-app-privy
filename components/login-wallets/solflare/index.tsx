@@ -3,7 +3,7 @@ import Button from "@/components/button";
 import useSolflare from "./use-solflare";
 
 const SolflareWallet = () => {
-  const { handleConnect } = useSolflare();
+  const { handleLogin } = useSolflare();
 
   return (
     <View>
@@ -11,7 +11,7 @@ const SolflareWallet = () => {
         Solflare Wallet
       </Text>
 
-      <Button title={"Login with Solflare"} onPress={handleConnect} />
+      <Button title={"Login with Solflare"} onPress={handleLogin} />
     </View>
   );
 };
