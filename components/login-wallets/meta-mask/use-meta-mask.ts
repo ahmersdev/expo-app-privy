@@ -15,7 +15,7 @@ const useMetaMask = () => {
     useDeeplinkWalletConnector,
     {
       ...walletBaseConfig,
-      baseUrl: "https://link.metamask.io",
+      baseUrl: "https://link.metamask.io/dapp",
       encryptionPublicKeyName: "metamask_encryption_public_key",
     }
   );

@@ -30,7 +30,8 @@ const useSolflare = () => {
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: `Error connecting Solflare wallet: ${error}`,
+        text1: "Error connecting Solflare wallet",
+        text2: error instanceof Error ? error.message : String(error),
       });
     }
   };
@@ -66,7 +67,8 @@ const useSolflare = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: `Error signing message: ${error}`,
+          text1: "Error signing message",
+          text2: error instanceof Error ? error.message : String(error),
         });
       }
 
@@ -76,7 +78,7 @@ const useSolflare = () => {
           message,
           signature: base58ToBase64(signature.signature),
           wallet: {
-            walletClientType: "phantom",
+            walletClientType: "solflare",
             connectorType: "mobile_wallet_protocol",
           },
         });
@@ -88,13 +90,15 @@ const useSolflare = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: `Error logging in: ${error}`,
+          text1: "Error logging in",
+          text2: error instanceof Error ? error.message : String(error),
         });
       }
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: `Error generating SIWS message: ${error}`,
+        text1: "Error generating SIWS message",
+        text2: error instanceof Error ? error.message : String(error),
       });
     }
   };
