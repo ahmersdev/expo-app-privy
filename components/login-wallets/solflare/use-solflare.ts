@@ -4,7 +4,6 @@ import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 import nacl from "tweetnacl";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
 import { useLoginWithSiws } from "@privy-io/expo";
 import { base58ToBase64 } from "@/utils/base58-to-base64";
 import {
@@ -39,9 +38,7 @@ const useSolflare = () => {
 
   // Initialize KeyPair on mount
   useEffect(() => {
-    if (!dappKeyPair.current) {
-      dappKeyPair.current = nacl.box.keyPair();
-    }
+    dappKeyPair.current ??= nacl.box.keyPair();
   }, []);
 
   // --- Deep Link Handler ---
